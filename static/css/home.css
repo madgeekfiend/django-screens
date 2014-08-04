@@ -1,0 +1,32 @@
+body {
+    padding-top: 50px;
+}
+
+.content {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.comments {
+    border-style: none;
+    text-align: left;
+}
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+.navbar-buttons {
+    vertical-align: middle;
+}
+
+.screenshot {
+    padding-top: 20px;
+    margin-bottom: 8px;
+}
+
+.comment {
+    border-top: thin solid lightgray;
+    border-bottom: thin solid lightgray;
+}

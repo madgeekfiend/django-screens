@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-buttons">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-exclamation-sign"></span> </button>
+            </div>
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-arrow-left"></span> </button>
+                <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-arrow-right"></span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+
+    {% for screen in screens %}
+    <div class="row screenshot">
+        <div id="screen_image" class="col-xs-10 col-xs-offset-2">
+            <img class="img-responsive" src="{{ screen.image.url }}" />
+        </div>
+    </div>
+
+    <!-- Comments -->
+    <div class="row">
+        {% for comment in comments %}
+            <div class="col-xs-offset-1 col-xs-10 comment" style="background-color: {% cycle 'lightblue' 'lightyellow' %}">
+                <p>
+                    <span style="color: red;"><em>{{ user.first_name }}</em></span>: {{ comment.comment }}
+                </p>
+            </div>
+        {% empty %}
+            <div style="text-align: center;">
+                <strong>!!!No comments to display!!!</strong>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Comment Form -->
+        {% crispy comment_form %}
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
