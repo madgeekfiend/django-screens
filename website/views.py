@@ -7,6 +7,7 @@ from website.forms.comment import CommentForm
 from website.forms.screens import ScreenUploadForm
 from website.models import Screen, Comment
 
+
 @login_required
 def upload(request):
     if request.method == 'GET':
@@ -16,11 +17,14 @@ def upload(request):
         # Store this stuff into the databse and redirect
         form = ScreenUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            screen = Screen(caption=form.cleaned_data['caption'], image=form.cleaned_data['image'])
-            screen.save()
+            #screen = Screen(caption=form.cleaned_data['caption'], image=form.cleaned_data['image'],
+             #               team=form.cleaned_data['team'])
+            #screen.save()
+            form.save()
             return redirect('screens:upload')
         else:
             return HttpResponseNotFound('Oops')
+
 
 @login_required
 def view_screen(request, screen_id):
@@ -28,7 +32,7 @@ def view_screen(request, screen_id):
     comments = Comment.objects.filter(screen=screen)
     form = CommentForm()
     form.helper.form_action = reverse('screens:comment', kwargs={'screen_id': screen.id})
-    return render(request,'view_screen.html', {'screen': screen, 'comments': comments, 'comment_form': form})
+    return render(request, 'view_screen.html', {'screen': screen, 'comments': comments, 'comment_form': form})
 
 
 @login_required
