@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container">
+    <div id="screen_image" class="col-xs-10 col-xs-offset-2" style="margin-bottom: 4px;">
+        <img class="img-responsive" src="{{ screen.image.url }}" />
+    </div>
+    <!-- Comments -->
+    <div class="row">
+        {% for comment in comments %}
+            <div class="col-xs-offset-1 col-xs-10 comment" style="background-color: {% cycle 'lightblue' 'lightyellow' %}">
+                <p>
+                    <span style="color: red;"><em>{{ user.first_name }}</em></span>: {{ comment.comment }}
+                </p>
+            </div>
+        {% empty %}
+            <div style="text-align: center;">
+                <strong>!!!No comments to display!!!</strong>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% crispy comment_form %}
+
+</div>
+
+{% endblock %}

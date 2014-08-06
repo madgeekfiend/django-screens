@@ -2,12 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseNotFound, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from website.forms.comment import CommentForm
 from website.forms.screens import ScreenUploadForm
 from website.models import Screen, Comment
 
-
+@login_required
 def upload(request):
     if request.method == 'GET':
         form = ScreenUploadForm()
@@ -21,6 +21,14 @@ def upload(request):
             return redirect('screens:upload')
         else:
             return HttpResponseNotFound('Oops')
+
+@login_required
+def view_screen(request, screen_id):
+    screen = get_object_or_404(Screen, pk=screen_id)
+    comments = Comment.objects.filter(screen=screen)
+    form = CommentForm()
+    form.helper.form_action = reverse('screens:comment', kwargs={'screen_id': screen.id})
+    return render(request,'view_screen.html', {'screen': screen, 'comments': comments, 'comment_form': form})
 
 
 @login_required
@@ -55,7 +63,7 @@ def comment(request, screen_id):
         form = CommentForm(request.POST)
         if form.is_valid():
             screen = Screen.objects.get(id=screen_id)
-            new_comment = Comment(screen=screen, comment=form.cleaned_data['comment'])
+            new_comment = Comment(screen=screen, comment=form.cleaned_data['comment'], created_by_user=request.user)
             new_comment.save()
             return redirect(request.META['HTTP_REFERER'])
     elif request.method == 'GET':

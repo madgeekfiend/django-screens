@@ -8,6 +8,8 @@ urlpatterns = patterns('',
     # url(r'^$', 'screens.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
     url(r'^screens/', include('website.urls',namespace='screens')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
     url(r'^admin/', include(admin.site.urls)),
